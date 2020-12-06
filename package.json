@@ -1,0 +1,26 @@
+{
+  "name": "rube-goldberg-lambda",
+  "version": "1.0.0",
+  "description": "Small lambda function for the 2nd step in our RubeGoldbergMachine project",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run archive",
+    "archive": "rimraf dist && mkdir dist && zip -r dist/function.zip . -x '*.git*' 'dist/*' '.env' 'package*'",
+    "deploy": "aws lambda update-function-code --function-name rubeGoldbergFunction --zip-file fileb://dist/function.zip",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unionhills/rube-goldberg-lambda.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/unionhills/rube-goldberg-lambda/issues"
+  },
+  "homepage": "https://github.com/unionhills/rube-goldberg-lambda#readme",
+  "devDependencies": {
+    "rimraf": "^3.0.2"
+  }
+}
