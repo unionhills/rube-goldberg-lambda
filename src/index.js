@@ -1,5 +1,8 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+require('dotenv').config();
 
-var serialize = function(object) {
+var serialize = (object) => {
   return JSON.stringify(object, null, 2)
 }
 
@@ -11,7 +14,7 @@ exports.handler = async (event, context) => {
     if (event.Records) {
         event.Records.forEach(record => {
             let message = JSON.parse(record.Sns.Message);
-            console.log('Records.Sns.Message = ' + serialize(JSON.parse(message)));
+            console.log('Records.Sns.Message = ' + serialize(message));
         });
     }
 
