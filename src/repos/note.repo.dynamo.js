@@ -1,24 +1,24 @@
-import * as dynamoose from "dynamoose";
+const dynamoose = require("dynamoose");
 
-export class DynamoNoteRepository {
+class DynamoNoteRepository {
     static #instance;
     #model;
+
+    static getInstance() {
+        if (!DynamoNoteRepository.instance) {
+            DynamoNoteRepository.instance = new DynamoNoteRepository();
+        }
+
+        return DynamoNoteRepository.instance;
+    }
 
     constructor() {
         this.model = this.createModel();
     }
 
-    static getInstance() {
-        if (!MongoNoteRepository.instance) {
-            MongoNoteRepository.instance = new MongoNoteRepository();
-        }
-
-        return MongoNoteRepository.instance;
-    }
-
-    #createModel() {
+    createModel() {
         const NoteSchema = new dynamoose.Schema({
-            id: { type: String },
+            _id: { type: String },
             subject: { type: String },
             body: { type: String },
             correlationId: { type: String },
@@ -30,8 +30,8 @@ export class DynamoNoteRepository {
 
         return dynamoose.model('Note', NoteSchema);
     }
-/*
-    public async findAll(): Promise<INoteDocument[]> {
+
+    async findAll() {
         try {
             const docs = await this.model.find({}).exec();
 
@@ -42,7 +42,7 @@ export class DynamoNoteRepository {
         }
     }
 
-    public async findById(id: string): Promise<INoteDocument> {
+    async findById(id) {
         try {
             const doc = await this.model.findById(id).exec();
 
@@ -52,8 +52,8 @@ export class DynamoNoteRepository {
             err.stack;
         }
     }
-*/
-     async create(newNote) {
+
+    async create(newNote) {
         try {
             const doc = await this.model.create(newNote);
 
@@ -63,27 +63,6 @@ export class DynamoNoteRepository {
             err.stack;
         }
     }
-/*
-    public async update(id: string, note: INote): Promise<INoteDocument> {
-        try {
-            const doc = await this.model.findByIdAndUpdate(id, note);
-
-            console.log(`updated doc=\n${doc}`);
-            return doc;
-        } catch (err) {
-            err.stack;
-        }
-    }
-
-    public async delete(id: string): Promise<INoteDocument> {
-        try {
-            const doc = await this.model.findByIdAndDelete(id).exec();
-
-            console.log(`deleted doc =\n${doc}`);
-            return doc;
-        } catch (err) {
-            err.stack;
-        }
-    }
-*/
 }
+
+module.exports = DynamoNoteRepository;
