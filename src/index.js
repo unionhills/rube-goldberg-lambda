@@ -1,6 +1,7 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+
 require('dotenv').config();
+var DynamoNoteRepository = require('./repos/note.repo.dynamo');
 
 var serialize = (object) => {
   return JSON.stringify(object, null, 2)
@@ -12,10 +13,14 @@ exports.handler = async (event, context) => {
     console.log('## EVENT: ' + serialize(event))
 
     if (event.Records) {
-        event.Records.forEach(record => {
+        for (const record of event.Records) {
             let message = JSON.parse(record.Sns.Message);
             console.log('Records.Sns.Message = ' + serialize(message));
-        });
+
+            const noteRepo = DynamoNoteRepository.getInstance();
+
+            await noteRepo.create(message);
+        };
     }
 
     const response = {
